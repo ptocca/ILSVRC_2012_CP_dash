@@ -1,0 +1,49 @@
+<style>line-height:normal</style>
+
+<h1>Notes</h1>This is a demo of Conformal Prediction,
+using a pre-trained ResNet50 model on the ImageNet LSVR Challenge 2012 data set.<br>
+It shows the predictions output by the ResNet50 model and by a CP using a NonConformity
+Measure computed on the output of the ResNet50 model.<br>
+The image can be selected out of a set of 2000.<br>
+The label for the image is shown below the image itself.
+The significance level \(\epsilon\) can varied from 0 to 1.<br>
+Below the sliders you can see two boxes containing the predictions, one for ResNet50 and one for CP.<br>
+It is also possible to choose between two forms of NCM, referred to here as NegProb and Ratio.<br>
+The plot shows the ECDF of the Non Conformity Measures for the label selected in the CP prediction set (or the one with the largest p-value). <br>
+
+<h2>Predictions</h2>
+CP outputs sets of labels, whereas the ResNet50 model outputs a distribution of probability over the 1,000 labels defined for the ImageNet data set.
+In order to have a similar form of prediction for the two methods, we built a prediction set out of the ResNet50 probability distribution.
+Specifically, we want to build a prediction set with a validity property, i.e. a set of labels such that, if the probability estimates are calibrated 
+(that is, if they correspond to long-term relative frequencies), the actual label is contained in the set with the relative frequency equal to the chosen
+confidence level \( 1-\epsilon \). To do that, we output the smallest set of labels whose total probability 
+(as estimated by ResNet50) exceeds \(1-\epsilon\). <br>
+For CP, we show the prediction set for the chosen significance level.<br>
+One should note that the ResNet50 sets constructed above are conservative, as the probability of hit equals or exceeds the targeted confidence.<br>
+
+
+<h2>Calibration set and test set</h2>
+The CP calibration set and the test set are a random partition of the ILSVRC2012 Validation Set. 
+The latter comprises 50,000 labelled images, evenly distributed over the 1,000 labels.<br>
+For the purposes of this demo, the ILSVRC2012 Validation Set was partitioned into a calibration set with 48,000 images and test set with 2,000 images.
+The partitioning was done with shuffling and stratification, ensuring that each category has the same number of images. <br>
+
+<h2>NCMs</h2>
+Two NCMs are used here. Of course, many other choices are possible.<br>
+<h4>Generalities</h4>
+<ul>
+<li>Let  \( \lbrace z_1, z_2, \ldots z_{k} \rbrace\) the calibration set with observations \( z_i = (x_i,y_i) \), where \( x_i \) is 
+a 224-by-224 image and \( y \in [1,2, \ldots, 1000] \)
+</li>
+<li>Let \( (p_1,p_2, \ldots, p_{1000}) \) the vector of 1,000 real numbers representing the probability distribution over the 1,000 labels
+ estimated by ResNet50 for a test object \( x_{\ell+1}\) </li>
+<li> Let \(\bar y\) be a hypothetical label for the test object </li>
+</ul>
+<h3>NegProb</h3>
+The NCM here referred to as NegProb is defined as:
+$$ \mathcal{A}(x_{\ell+1},\bar y) = -p_{\bar y} $$
+i.e. the probability estimated for the hypothetical label, with its sign changed.
+<h3>Ratio</h3>
+The NCM here referred to as Ratio is defined as:
+$$ \mathcal{A}(x_{\ell+1},\bar y) = \frac {\max_{y \neq \bar y}p_y} {p_{\bar y} } $$
+i.e. the ratio of the max probability estimated for labels other than the hypothetical one to the probability estimated for the hypothetical label.

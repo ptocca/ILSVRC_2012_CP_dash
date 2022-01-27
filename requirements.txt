@@ -13,6 +13,6 @@ statsmodels==0.11.0
 tensorflow==2.5.2
 joblib==0.14.1
 jupyter-dash==0.2.1.post1
-jupyter_server_proxy==1.5.0
+jupyter_server_proxy==3.2.1
 json_tricks==3.15.2
 voila==0.1.21

@@ -11,7 +11,7 @@ Pillow==8.2.0
 plotly==4.8.1
 statsmodels==0.11.0
 tensorflow==2.5.2
-joblib==0.14.1
+joblib==1.2.0
 jupyter-dash==0.2.1.post1
 jupyter_server_proxy==1.5.0
 json_tricks==3.15.2
